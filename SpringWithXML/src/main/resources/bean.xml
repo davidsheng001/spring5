@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--set方式注入普通属性-->
+    <bean id="user" class="cn.pear.spring.entity.User">
+        <property name="userName" value="张三"/>
+        <property name="userAge" value="18"/>
+        <property name="money" value="1000"/>
+    </bean>
+
+    <!--构造器方式注入-->
+    <bean id="user1" class="cn.pear.spring.entity.User">
+        <constructor-arg name="userName" value="李四"/>
+        <constructor-arg name="userAge" value="20"/>
+        <constructor-arg name="money" value="1000"/>
+    </bean>
+
+    <!--注入null-->
+    <bean id="user2" class="cn.pear.spring.entity.User">
+        <property name="userName">
+            <null/>
+        </property>
+        <property name="userAge" value="100"/>
+        <property name="money" value="2000"/>
+    </bean>
+
+    <!--注入带特殊符号的-->
+    <bean id="user3" class="cn.pear.spring.entity.User">
+        <property name="userName">
+            <value><![CDATA[<<王五>>]]></value>
+        </property>
+        <property name="userAge" value="100"/>
+        <property name="money" value="2000"/>
+    </bean>
+
+    <!--外部bean-->
+    <bean id="userDao" class="cn.pear.spring.dao.UserDao">
+        <property name="user" ref="user"/>
+    </bean>
+
+    <!--内部bean-->
+    <bean id="userDao1" class="cn.pear.spring.dao.UserDao">
+        <property name="user">
+            <bean class="cn.pear.spring.entity.User">
+                <property name="userName" value="马六"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!--级联赋值-->
+    <bean id="userDao2" class="cn.pear.spring.dao.UserDao">
+        <property name="user" ref="user1"/>
+        <property name="user.userName" value="50000"/>
+    </bean>
+
+    <!--注入集合-->
+    <bean id="student" class="cn.pear.spring.entity.Student">
+        <property name="stuClass" value="班级一"/>
+        <property name="stuName" value="无名氏"/>
+    </bean>
+    <bean id="classes" class="cn.pear.spring.entity.Classes">
+        <property name="name" value="班级一"/>
+        <property name="stu">
+            <list>
+                <ref bean="student"/>
+            </list>
+        </property>
+        <property name="setString">
+            <set>
+                <value>one</value>
+                <value>two</value>
+                <value>third</value>
+            </set>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="a" value="one"/>
+                <entry key="b" value="two"/>
+                <entry key="c" value="third"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--spring生命周期-->
+    <bean id="lifeCycle" class="cn.pear.spring.entity.LifeCycle"
+          init-method="init" destroy-method="destroy">
+        <property name="name" value="123456"/>
+    </bean>
+
+    <!--后置处理器-->
+    <!--<bean id="myBeanPost" class="cn.pear.spring.entity.MyBeanPost"/>-->
+
+    <!--自动装配-->
+    <!--byName-->
+    <bean id="userDao3" class="cn.pear.spring.dao.UserDao" autowire="byName"/>
+    <!--byType-->
+
+    <!--aop-->
+    <bean id="personDao" class="cn.pear.spring.dao.PersonDaoImpl"/>
+    <bean id="personDaoProxy" class="cn.pear.spring.dao.PersonDaoProxy"/>
+    <aop:config>
+        <!--切入点-->
+        <aop:pointcut id="p" expression="
+            execution(* cn.pear.spring.dao.PersonDao.*(..))"/>
+        <!--配置切面-->
+        <aop:aspect ref="personDaoProxy">
+            <aop:before method="proxyMethod" pointcut-ref="p"/>
+            <aop:around method="around" pointcut-ref="p"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
