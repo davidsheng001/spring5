@@ -1,13 +1,64 @@
 package cn.pear.controller;
 
+import cn.pear.bean.Book;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 @Controller
 public class MyFirstController {
+
+    /*
+    * 对原生api的支持
+    * */
+    @RequestMapping("/handle10")
+    public String handle10(HttpServletRequest request,
+                           HttpSession session){
+        request.setAttribute("reqParam","我是请求域中的");
+        session.setAttribute("sessionParam","我是session域中的");
+        return "success";
+    }
+
+    /*
+    * 自动封装pojo类型数据
+    * */
+    @RequestMapping("/handle09")
+    public String handle09(Book book){
+        System.out.println(book);
+        return "success";
+    }
+
+    /*
+    * @RequestParam()获取请求参数的值
+    * @RequestHeader()获取请求头中的信息
+    * @CookieValue()获取某个cookie值
+    * */
+    @RequestMapping("/handle08")
+    public String handle08(@RequestParam(value = "name",required = false) String name,
+                           @RequestHeader(value = "User-Agent",required = false) String userAgent,
+                           @CookieValue(value = "JSESSIONID",required = false)String jid){
+        System.out.println("name="+name);
+        System.out.println("userAgent="+userAgent);
+        System.out.println("jid="+jid);
+        return "success";
+    }
+
+    /*
+    * rest风格url
+    * get，post，put，delete
+    * */
+    @RequestMapping(value = "/handle07", method = RequestMethod.DELETE)
+    public String handle07(){
+        System.out.println("handle07-delete..........");
+        return "success";
+    }
+
+    /*
+    * 路径占位符
+    * */
     @RequestMapping("/handle06/{id}")
     public String handle06(@PathVariable("id") String id){
         System.out.println(id);
