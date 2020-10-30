@@ -6,6 +6,16 @@ public class Book {
     private int number;
     private float price;
 
+    public Book() {
+    }
+
+    public Book(String bookName, String author, int number, float price) {
+        this.bookName = bookName;
+        this.author = author;
+        this.number = number;
+        this.price = price;
+    }
+
     public String getBookName() {
         return bookName;
     }

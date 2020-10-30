@@ -2,10 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context.xsd">
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <context:component-scan base-package="cn.pear.controller"/>
 
@@ -13,5 +16,37 @@
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/pages/"/>
         <property name="suffix" value=".jsp"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
     </bean>
+
+    <!--配置将请求映射到页面-->
+    <mvc:view-controller path="/tvr/handle02" view-name="hello"/>
+    <mvc:annotation-driven/>
+
+    <!--将区域化信息交给springmvc管理,配置资源管理器-->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="i18n"/>
+    </bean>
+
+    <!--自定义视图解析器-->
+    <bean class="cn.pear.others.MyViewResolver">
+        <property name="order" value="1"/>
+    </bean>
+
+    <!--自己映射的请求自己处理，静态资源交给tomcat处理-->
+    <mvc:default-servlet-handler/>
+
+    <!--配置文件上传解析器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
+
+    <!--配置拦截器-->
+    <mvc:interceptors>
+        <!--默认拦截所有请求-->
+        <!--<bean class="cn.pear.others.MyInterceptor"/>-->
+        <mvc:interceptor>
+            <mvc:mapping path="/testInterceptor"/>
+            <bean class="cn.pear.others.MyInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

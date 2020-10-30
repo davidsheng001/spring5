@@ -9,10 +9,13 @@
 <html>
 <head>
     <title>Title</title>
+    <% System.out.println("success.jsp....."); %>
 </head>
 <body>
     <h1>响应success</h1><br>
     请求域：${requestScope.reqParam}<br>
     session域：${sessionScope.sessionParam}<br>
+
+    数据输出：${requestScope.msg}
 </body>
 </html>
