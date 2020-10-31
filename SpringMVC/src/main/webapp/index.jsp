@@ -50,6 +50,9 @@
 </form>
 
 <a href="testInterceptor">拦截器</a><br>
+
+<a href="testexception">异常处理</a><br>
+<a href="testresponsestatus">@responsestatus</a><br>
 <script type="text/javascript">
     $("#buttonid").bind('click',function () {
         var book={bookName:"西游记",author:"吴承恩",number:10,price:5};
