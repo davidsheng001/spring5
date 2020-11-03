@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pear.dao.KeyDao">
+    <select id="getById" resultMap="myKey">
+        SELECT k.*,l.id lid,l.lockname FROM t_key k LEFT JOIN t_lock l ON k.lockid=l.id WHERE k.id=2;
+    </select>
+    <resultMap id="myKey" type="cn.pear.bean.Key">
+        <id column="id" property="id"/>
+        <result column="keyname" property="keyName"/>
+        <association property="lock" javaType="cn.pear.bean.Lock">
+            <id property="id" column="lid"/>
+            <result property="lockName" column="lockname"/>
+        </association>
+    </resultMap>
+</mapper>

@@ -20,8 +20,8 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="mapper/EmployeeDaoMapper.xml"/>
+        <!--<mapper resource="mapper/EmployeeDao.xml"/>-->
         <!--mappers批量注册,需要dao与xml实现文件在同一目录下-->
-        <!--<package name="cn.pear.dao"/>-->
+        <package name="cn.pear.dao"/>
     </mappers>
 </configuration>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pear.dao.EmployeeDao">
+    <select id="selectEmpById" resultType="cn.pear.bean.Employee">
+        SELECT * FROM t_employee WHERE id = #{id};
+    </select>
+    <!--多个参数时，自动封装成map，可以自定义给key赋值
+        #{}预编译,${}直接拼接，用处${t_employee}动态拼接表名-->
+    <select id="selectEmpByIdAndName" resultType="cn.pear.bean.Employee">
+        SELECT * FROM t_employee WHERE id=#{id} AND empname=#{empName};
+    </select>
+    <!--查询返回List-->
+    <select id="selectEmp" resultType="cn.pear.bean.Employee">
+        SELECT * FROM t_employee
+    </select>
+    <!--查询返回Map<Integer,Employee>-->
+    <select id="selectEmpMap" resultType="cn.pear.bean.Employee">
+         SELECT * FROM t_employee
+    </select>
+    <!--插入一条数据，并返回自增类型的主键值useGeneratedKeys="true" keyProperty="id"
+        非自增类型的主键值<selectKey keyProperty="id" resultType="int" order="BEFORE"/>-->
+    <insert id="insertEmp" parameterType="cn.pear.bean.Employee" useGeneratedKeys="true" keyProperty="id">
+        INSERT into t_employee VALUES(NULL,#{empName},#{gender},#{email});
+    </insert>
+
+    <update id="updateEmpById" parameterType="cn.pear.bean.Employee">
+        UPDATE t_employee SET empname=#{empName} WHERE id=#{id};
+    </update>
+
+    <delete id="deleteEmpById" parameterType="int">
+        DELETE FROM t_employee WHERE id=#{id};
+    </delete>
+
+
+</mapper>
