@@ -13,7 +13,7 @@ public class Bean1test {
                 ClassPathXmlApplicationContext("bean1.xml");
         Person person = new Person();
         PersonDao personDao = context.getBean("personDao",PersonDao.class);
-        person.setName("关羽1");
+        person.setName("关羽2");
         person.setAge(100);
         personDao.add(person);
     }

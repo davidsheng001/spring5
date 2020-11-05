@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://mybatis.org/schema/mybatis-spring
+                           http://mybatis.org/schema/mybatis-spring-1.2.xsd">
+
+    <context:component-scan base-package="cn.pear">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"/>
+
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:mybatis/mapper/*.xml"/>
+    </bean>
+    <!--<mybatis-spring:scan base-package="cn.pear.dao"/>-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.pear.dao"/>
+    </bean>
+
+    <!--<bean id="tm" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"/>-->
+    <!--<aop:config>-->
+        <!--<aop:pointcut id="tmpoint" expression="execution(* cn.pear.service.*.*(..))"/>-->
+        <!--<aop:advisor advice-ref="tmadvice" pointcut-ref="tmpoint"/>-->
+    <!--</aop:config>-->
+    <!--<tx:advice id="tmadvice" transaction-manager="tm">-->
+        <!--<tx:attributes>-->
+            <!--<tx:method name="insert*"/>-->
+        <!--</tx:attributes>-->
+    <!--</tx:advice>-->
+</beans>
