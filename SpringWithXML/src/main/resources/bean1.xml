@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/aop
-                           http://www.springframework.org/schema/aop/spring-aop.xsd">
+                           http://www.springframework.org/schema/aop/spring-aop.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <bean id="personDao" class="cn.pear.spring.dao.PersonDaoImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
@@ -35,13 +38,17 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-
-
-
-
-
-
-
-
     <!--spring-tx-->
+    <bean id="tm" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <aop:config>
+        <aop:pointcut id="tmpoint" expression="execution(* cn.pear.spring.dao.PersonDao.*(..))"/>
+        <aop:advisor advice-ref="tmadvice" pointcut-ref="tmpoint"/>
+    </aop:config>
+    <tx:advice id="tmadvice" transaction-manager="tm">
+        <tx:attributes>
+            <tx:method name="add*"/>
+        </tx:attributes>
+    </tx:advice>
 </beans>
