@@ -1,0 +1,22 @@
+
+server:
+  port: 8080
+person:
+  name: 张三
+  age: ${random.int}
+  map: {k1: v1,k2: v2}
+  list:
+    - item1
+    - item2
+  dog:
+    name: ${person.name}_小狗
+    age: 2
+spring:
+  profiles:
+    active: dev
+---
+
+server:
+     port: 8081
+spring:
+  profiles: dev
